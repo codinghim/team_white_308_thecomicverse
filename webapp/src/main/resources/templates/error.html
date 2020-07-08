@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>TheComicVerse</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+    />
+    <script
+            type="text/javascript"
+            src="../static/js/usersession.js"
+            th:src="@{/js/usersession.js}"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="../static/css/error.css"
+      th:href="@{/css/error.css}"
+    />
+
+    <title>TheComicVerse</title>
+</head>
+
+<body class="bg-purple">
+        <div class="stars">
+            <div class="custom-navbar">
+                <div class="brand-logo">
+                  <nav class="navbar navbar-light">
+                    <a class="navbar-brand" style="color: orange;">TheComicVerse</a>
+                  </nav>
+                </div>
+            </div>
+            <div class="central-body">
+                <div th:text="${errorMsg}"></div>
+                <div> LOOKS LIKE YOU ARE LOST IN SPACE</div>
+                <form id="submitHome" action="/signout" method="GET">
+                    <button
+                    id = "btn"
+                    class="btn-go-home"
+                    onclick="this.form.submit();"
+                    >GO BACK HOME
+                    </button>
+                </form>
+            </div>
+            <div class="objects">
+                <img class="object_rocket" src="http://salehriaz.com/404Page/img/rocket.svg" width="40px">
+                <div class="earth-moon">
+                    <img class="object_earth" src="http://salehriaz.com/404Page/img/earth.svg" width="100px">
+                    <img class="object_moon" src="http://salehriaz.com/404Page/img/moon.svg" width="80px">
+                </div>
+                <div class="box_astronaut">
+                    <img class="object_astronaut" src="http://salehriaz.com/404Page/img/astronaut.svg" width="140px">
+                </div>
+            </div>
+            <div class="glowing_stars">
+                <div class="star"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+
+            </div>
+
+        </div>
+
+    </body>
+
+    </html>

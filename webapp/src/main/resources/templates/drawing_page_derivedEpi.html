@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+
+    <title>The ComicVerse - Drawing Tool</title>
+    <!--To Work with icons-->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="../static/css/index.css"
+      th:href="@{/css/index.css}"
+    />
+
+    <script
+      th:src="@{js/jquery.min.js}"
+      src="../static/js/jquery.min.js"
+    ></script>
+    <script
+      th:src="@{js/paper-full.min.js}"
+      src="../static/js/paper-full.min.js"
+    ></script>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Ek+Mukta:400,300,200,500,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <script
+      type="text/javascript"
+      src="../static/js/usersession.js"
+      th:src="@{/js/usersession.js}"
+    ></script>
+  </head>
+
+  <body>
+    <!--Menu Bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!--<a class="navbar-brand" href="#">ComicVerse</a>-->
+      <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <form id="submitHome2" action="/home" method="GET">
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitHome2').submit()"
+              >Home <span class="sr-only">(current)</span></a
+              >
+            </form>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+              Browse
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                      id="submitBrowseSeries"
+                      th:action="@{/series/allSeries}"
+                      method="POST"
+              >
+                <input
+                        name="username"
+                        id="dummyUsernameForm10"
+                        hidden/>
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitBrowseSeries').submit();"
+                >Browse Series</a
+                >
+              </form>
+
+              <form
+                      id="submitBrowseDerivEpi"
+                      th:action="@{/episodes/allEpiWithDerivedEpi}"
+                      method="POST"
+              >
+
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitBrowseDerivEpi').submit();"
+                >Browse Derived Episodes</a
+                >
+              </form>
+            </div>
+          </li>
+
+
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLink2"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+              Create
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                      id="submitCreate2"
+                      action="/create_comic_series"
+                      method="GET"
+              >
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitCreate2').submit()"
+                >Create a Serie</a
+                >
+              </form>
+              <div class="dropdown-divider"></div>
+              <form
+                      id="submitUpload"
+                      th:action="@{/episodes/upload_episode}"
+                      method="GET"
+              >
+                <input
+                        id="dummyUsernameForm2"
+                        type="text"
+                        name="username"
+                        hidden
+                />
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitUpload').submit()"
+                >Upload an Episode</a
+                >
+              </form>
+              <form id="submitDraw" action="/drawing_page" method="GET">
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitDraw').submit()"
+                >Draw a Panel</a
+                >
+              </form>
+            </div>
+          </li>
+          <li class="nav-item">
+            <form
+                    id="submitManage"
+                    th:action="@{/series/mySeries}"
+                    method="GET"
+            >
+              <input
+                      id="dummyUsernameForm3"
+                      type="text"
+                      name="username"
+                      hidden
+              />
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitManage').submit()"
+              >Manage</a
+              >
+            </form>
+          </li>
+          <li class="nav-item">
+            <form id="submitSetting" action="/login/getUser" method="GET">
+              <input
+                      id="dummyUsernameForm1"
+                      type="text"
+                      name="username"
+                      hidden
+              />
+
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitSetting').submit()"
+              >Account Settings</a
+              >
+            </form>
+          </li>
+          <li class="nav-item pull-right">
+            <form id="submitSignout" action="/signout" method="GET">
+              <a
+                      class="nav-link pull-right"
+                      id="signoutBtn"
+                      href="#"
+                      onclick="document.getElementById('submitSignout').submit()"
+              >Sign Out</a
+              >
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="card">
+      <div class="card-header">Drawing Tool</div>
+      <div class="card-body">
+        <div class="card">
+          <div class="card-header">
+           Drawing Panel
+          </div>
+          <div class="card-body">
+            <div style="display: inline-block; ">
+              <div class="painter" style="float:left; height:550px;">
+                <div style="float:left; margin-right: 30px;">
+                  <ul id="toolsul" class="tools" style="float:left;width:50px ">
+                    <li id="toolsSelect" data-type="select" title="Select">
+                      <i class="fas fa-mouse-pointer"></i>
+                    </li>
+                    <li id="toolsPencil" data-type="pen" class="active" title="Pen">
+                      <i class="fas fa-pencil-alt"></i>
+                    </li>
+                    <li data-type="line" title="Line">
+                      <i class="fas fa-grip-lines"></i>
+                    </li>
+                    <li data-type="circle" title="Circle">
+                      <i class="far fa-circle"></i>
+                    </li>
+                    <li class="hide" data-type="ellipse">
+                      <i
+                        class="icon-tools icon-ellipse-black"
+                        data-default="icon-tools icon-ellipse-black"
+                      ></i>
+                    </li>
+                    <li data-type="rectangle" title="Rectangle">
+                      <i class="far fa-square"></i>
+                    </li>
+                    <li class="hide" data-type="rectangle">
+                      <i
+                        class="icon-tools icon-rectangle-black"
+                        data-default="icon-tools icon-rectangle-black"
+                      ></i>
+                    </li>
+                    <li class="hide" data-type="rightangle">
+                      <i
+                        class="icon-tools icon-rightangle-black"
+                        data-default="icon-tools icon-rightangle-black"
+                      ></i>
+                    </li>
+                    <li class="hide" data-type="equilateral">
+                      <i
+                        class="icon-tools icon-equilateral-black"
+                        data-default="icon-tools icon-equilateral-black"
+                      ></i>
+                    </li>
+                    <li class="hide" data-type="isosceles">
+                      <i
+                        class="icon-tools icon-isosceles-black"
+                        data-default="icon-tools icon-isosceles-black"
+                      ></i>
+                    </li>
+                    <li data-type="text" title="Text">
+                      <i class="fas fa-font"></i>
+                    </li>
+                    <li data-type="bubble" title="Speech Bubble">
+                      <i class="far fa-comment-alt"></i>
+                    </li>
+                    <li data-type="image" title="Image">
+                      <input
+                        type="file"
+                        id="imageFile"
+                        accept="image/*"
+                        style="display:none;"
+                        onclick="value=null"
+                      />
+                      <i
+                        class="far fa-image"
+                        onclick="document.getElementById('imageFile').click();"
+                      ></i>
+                    </li>
+
+                    <li data-type="remove" title="Delete">
+                      <i class="far fa-trash-alt"></i>
+                    </li>
+                    <li data-type="palette" title="Select Color">
+                      <input type="color" id="colorpicker" value="#E34F51" />
+                    </li>
+                    <li id="undobtn" data-type="undo" title="Undo">
+                      <i id="undo" class="fas fa-undo"></i>
+                    </li>
+                    <li data-type="redo" title="Redo">
+                      <i id="redo" class="fas fa-redo"></i>
+                    </li>
+                  </ul>
+
+                  <ul
+                    id="toolsul"
+                    class="tools"
+                    style="float:left; width:50px;"
+                  >
+                    <li data-type="sendForward" title="Send Forward">
+                      <i id="sendForwardButton" class="fas fa-angle-right"></i>
+                    </li>
+                    <li data-type="sendFront" title="Send to Front">
+                      <i
+                        id="sendFrontButton"
+                        class="fas fa-angle-double-right"
+                      ></i>
+                    </li>
+                    <li data-type="sendBackward" title="Send Backward">
+                      <i id="sendBackwardButton" class="fas fa-angle-left"></i>
+                    </li>
+                    <li data-type="sendBack" title="Send to Back">
+                      <i
+                        id="sendBackButton"
+                        class="fas fa-angle-double-left"
+                      ></i>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+              <div style="float:right;">
+                <div
+                  id="panelTablecontainer"
+                  style="overflow-y: scroll;overflow-x: hidden; height:600px; width: 80vw; padding: 20px; border:1px solid grey;"
+                >
+                  <div id="panelTable" style="width:100%;height:100%;">
+                    <div class="row" id="panel" style="width:100%;height:100%;">
+                      <div class="col-md-12" style="margin:0;width:100%;height:100%;">
+                        <div class="card" style="width:100%;height:100%;">
+                          <div
+                            class="card-header"
+                            style="display: inline-block;"
+                          >
+                            <div style="float:left;">
+                              My Canvas
+                            </div>
+                            <div style="float:right;">
+                              <i class="far fa-copy" style="margin:5px;"></i>
+                              <i class="fa fa-paste" style="margin:5px;"></i>
+                              <i
+                                class="far fa-trash-alt"
+                                style="margin:5px;"
+                              ></i>
+                              <i
+                                class="fas fa-mouse-pointer"
+                                style="margin:5px;"
+                              ></i>
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <div id="canvasDiv" class="canvasDiv">
+                              <canvas id="c" width="100%" height="100%"
+                                >HTML5</canvas
+                              >
+                            </div>
+                            <!--
+                                            <img class="card-img-top"
+                                                src="https://pbs.twimg.com/profile_images/458955466756726784/KQpNPBA_.png"
+                                                alt="Card image cap" />
+                                        -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div style="margin:0px auto 20px auto;">
+          <a
+            id="save"
+            download="save.json"
+            type="button"
+            class="btn btn-outline-success"
+          >
+            Save as JSON
+          </a>
+          <input
+            id="load"
+            style="display:none;"
+            type="file"
+            class="btn btn-outline-success"
+            onclick="value=null"
+          />
+          <button
+            type="button"
+            class="btn btn-outline-success"
+            onclick="document.getElementById('load').click()"
+          >
+            Load JSON
+          </button>
+
+
+          <form
+            id="AddDerivedEpi"
+            th:action="@{/episodes/addDerivedEpi}"
+            method="POST"
+          >
+
+          <input
+            id="dummyUsernameForm4"
+            type="text"
+            name="username"
+            hidden
+          />
+          <input
+            id="episodeID2"
+            type="text"
+            name="episodeID"
+            hidden
+            th:value="${episodeID}"
+          />
+          <input
+            id="endingScene"
+            type="text"
+            name="endingScene"
+            hidden
+          />
+
+          <a
+                  id="save_png"
+                  type="button"
+                  class="btn btn-outline-success"
+          >
+            Upload
+          </a>
+        </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="userNotLoggedInModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Login Confirmation</h5>
+
+          </div>
+          <div class="modal-body">
+            <p>Please log in or sign up to continue.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="document.getElementById('submitHome').submit()"
+            >
+              Log In
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              onclick="document.getElementById('submitSignUp').submit()"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="submitSignUp" action="/sign_up_form" method="GET"></form>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../static/js/navbar.js" th:src="@{/js/navbar.js}"></script>
+    <script
+      src="../static/js/loginModal.js"
+      th:src="@{/js/loginModal.js}"
+    ></script>
+    <!--<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>-->
+    <script src="https://cdn.bootcss.com/fabric.js/2.1.0/fabric.min.js"></script>
+    <script src="../static/js/demo.js" th:src="@{/js/demo.js}"></script>
+    <script
+      src="../static/js/canvasZoom.js"
+      th:src="@{/js/canvasZoom.js}"
+    ></script>
+    <script
+      src="../static/js/drawing_page.js"
+      th:src="@{/js/drawing_page_derivedEpi.js}"
+    ></script>
+  </body>
+</html>
+
+<!--
+                  <button id="sendFrontButton">Send To Front</button>
+                  <button id="sendForwardButton">Send Forward</button>
+                  <button id="sendBackwardButton">Send Backward</button>
+                  <button id="sendBackButton">Send to Back</button>
+                  -->
+
+<!--
+                                  <div class="row">
+                                    <div class="col-md-6" style="margin:0 auto;">
+                                      <div class="card">
+                                        <div class="card-header" style="display: inline-block;">
+                                          <div style="float:left;">
+                                            Panel 2
+                                          </div>
+                                          <div style="float:right;">
+                                            <i class="far fa-copy" style="margin:5px;"></i>
+                                            <i class="fa fa-paste" style="margin:5px;"></i>
+                                            <i class="far fa-trash-alt" style="margin:5px;"></i>
+                                            <i
+                                              class="fas fa-mouse-pointer"
+                                              style="margin:5px;"
+                                            ></i>
+                                          </div>
+                                        </div>
+                                        <div class="card-body">
+                                          <img
+                                            class="card-img-top"
+                                            src="https://pbs.twimg.com/profile_images/458955466756726784/KQpNPBA_.png"
+                                            alt="Card image cap"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="col-md-6" style="margin:0 auto;">
+                                      <div class="card">
+                                        <div class="card-header" style="display: inline-block;">
+                                          <div style="float:left;">
+                                            Panel 3
+                                          </div>
+                                          <div style="float:right;">
+                                            <i class="far fa-copy" style="margin:5px;"></i>
+                                            <i class="fa fa-paste" style="margin:5px;"></i>
+                                            <i class="far fa-trash-alt" style="margin:5px;"></i>
+                                            <i
+                                              class="fas fa-mouse-pointer"
+                                              style="margin:5px;"
+                                            ></i>
+                                          </div>
+                                        </div>
+                                        <div class="card-body">
+                                          <img
+                                            class="card-img-top"
+                                            src="https://pbs.twimg.com/profile_images/458955466756726784/KQpNPBA_.png"
+                                            alt="Card image cap"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                -->

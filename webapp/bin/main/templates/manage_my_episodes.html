@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>The ComicVerse - Manage My Episodes</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+
+    <!-- To be updated -->
+    <link
+      rel="stylesheet"
+      href="../static/css/manage_my_series.css"
+      th:href="@{/css/manage_my_series.css}"
+    />
+
+    <script
+      type="text/javascript"
+      src="../static/js/usersession.js"
+      th:src="@{/js/usersession.js}"
+    ></script>
+  </head>
+
+  <body>
+    <!--Menu Bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!--<a class="navbar-brand" href="#">ComicVerse</a>-->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <form id="submitHome" action="/home" method="GET">
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitHome').submit()"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </form>
+          </li>
+          <li class="nav-item">
+            <form
+              id="submitBrowse"
+              th:action="@{/series/allSeries}"
+              method="POST"
+            >
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitBrowse').submit()"
+                >Browse</a
+              >
+            </form>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Create
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                id="submitCreate"
+                action="/create_comic_series"
+                method="GET"
+              >
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="document.getElementById('submitCreate').submit()"
+                  >Create a Serie</a
+                >
+              </form>
+              <div class="dropdown-divider"></div>
+              <form
+                id="submitUpload"
+                th:action="@{/episodes/upload_episode}"
+                method="GET"
+              >
+                <input
+                  id="dummyUsernameForm2"
+                  type="text"
+                  name="username"
+                  hidden
+                />
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="document.getElementById('submitUpload').submit()"
+                  >Upload an Episode</a
+                >
+              </form>
+              <form id="submitDraw" action="/drawing_page" method="GET">
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="document.getElementById('submitDraw').submit()"
+                  >Draw a Panel</a
+                >
+              </form>
+            </div>
+          </li>
+          <li class="nav-item">
+            <form
+              id="submitManage"
+              th:action="@{/series/mySeries}"
+              method="GET"
+            >
+              <input
+                id="dummyUsernameForm3"
+                type="text"
+                name="username"
+                hidden
+              />
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitManage').submit()"
+                >Manage</a
+              >
+            </form>
+          </li>
+          <li class="nav-item">
+            <form id="submitSetting" action="/login/getUser" method="GET">
+              <input
+                id="dummyUsernameForm1"
+                type="text"
+                name="username"
+                hidden
+              />
+
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitSetting').submit()"
+                >Account Settings</a
+              >
+            </form>
+          </li>
+          <li class="nav-item pull-right">
+            <form id="submitSignout" action="/signout" method="GET">
+              <a
+                class="nav-link pull-right"
+                id="signoutBtn"
+                href="#"
+                onclick="document.getElementById('submitSignout').submit()"
+                >Sign Out</a
+              >
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="card">
+      <div class="card-header">Manage My Episodes</div>
+      <div class="card-body" style="min-height:90vh">
+        <div class="card">
+          <div class="card-header">
+            <span
+              th:text="${series.SeriesName}"
+              style="font-weight: bold;"
+            ></span>
+          </div>
+          <div>
+            <form
+              id="deleteSeries"
+              th:action="@{/series/deleteSeries}"
+              method="GET"
+            >
+              <input
+                id="dummyUsernameForm4"
+                type="text"
+                name="username"
+                hidden
+              />
+              <input
+                id="seriesID"
+                type="text"
+                name="seriesID"
+                hidden
+                th:value="${series.SeriesID}"
+              />
+              <a
+                class="btn btn-danger"
+                href="#"
+                onclick="document.getElementById('deleteSeries').submit()"
+                >Delete</a
+              >
+            </form>
+          </div>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <img th:src="${series.imageData}" alt="Card image cap" />
+              </div>
+              <div class="col-sm-9">
+                <label>Likes - 456</label>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="episodeTable" style="margin:10px;">
+          <div th:if="${episodes} != null" class="row">
+            <div
+              th:each="episode : ${episodes}"
+              class="col-sm-4"
+              style="margin:10px 0px;"
+            >
+              <div class="card">
+                <img
+                  class="card-img-top"
+                  th:src="${episode.imageData}"
+                  alt="Card image cap"
+                />
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <h5
+                        class="card-title"
+                        th:text="${episode.EpisodeName}"
+                      ></h5>
+                    </div>
+                    <div>
+                      <form
+                        id="submitReadEpisode"
+                        th:action="@{/episodes/readEpisode}"
+                      >
+                        <input
+                          name="episodeID"
+                          th:value="${episode.EpisodeID}"
+                          hidden
+                        />
+                        <input
+                          class="btn btn-primary"
+                          type="button"
+                          onclick="this.form.submit();"
+                          value="View"
+                        />
+                      </form>
+                    </div>
+                    <div>
+                      <a href="#" class="btn btn-primary">Edit</a>
+                    </div>
+                    <div>
+                      <form
+                        id="deleteEpisode"
+                        th:action="@{/episodes/deleteEpisode}"
+                        method="GET"
+                      >
+                        <input
+                          type="text"
+                          name="seriesID"
+                          hidden
+                          th:value="${episode.SeriesID}"
+                        />
+                        <input
+                          name="episodeID"
+                          th:value="${episode.EpisodeID}"
+                          hidden
+                        />
+                        <input
+                          class="btn btn-primary"
+                          type="button"
+                          onclick="this.form.submit();"
+                          value="Delete"
+                        />
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="submitDraw2" action="/drawing_page" method="GET">
+          <span
+            class="fa-stack fa-2x"
+            style="position: fixed; bottom:15px; right:15px"
+            onclick="document.getElementById('submitDraw2').submit()"
+          >
+            <i class="fas fa-circle fa-stack-2x" style="color:orange"></i>
+            <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+          </span>
+        </form>
+      </div>
+    </div>
+
+    <div id="userNotLoggedInModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Login Confirmation</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Please log in or sign up to continue.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="document.getElementById('submitHome').submit()"
+            >
+              Log In
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              onclick="document.getElementById('submitSignUp').submit()"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="submitSignUp" action="/sign_up_form" method="GET"></form>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../static/js/navbar.js" th:src="@{/js/navbar.js}"></script>
+    <script
+      src="../static/js/loginModal.js"
+      th:src="@{/js/loginModal.js}"
+    ></script>
+  </body>
+</html>

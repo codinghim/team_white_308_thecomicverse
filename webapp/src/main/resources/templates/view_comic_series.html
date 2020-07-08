@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:value="http://www.w3.org/1999/xhtml"
+  lang="en"
+>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>The ComicVerse - Read Comic Series</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      type="text/javascript"
+      src="../static/js/usersession.js"
+      th:src="@{/js/usersession.js}"
+    ></script>
+  </head>
+
+  <body>
+    <!--Menu Bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!--<a class="navbar-brand" href="#">ComicVerse</a>-->
+      <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <form id="submitHome2" action="/home" method="GET">
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitHome2').submit()"
+              >Home <span class="sr-only">(current)</span></a
+              >
+            </form>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+              Browse
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                      id="submitBrowseSeries"
+                      th:action="@{/series/allSeries}"
+                      method="POST"
+              >
+                <input
+                        name="username"
+                        id="dummyUsernameForm10"
+                        hidden/>
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitBrowseSeries').submit();"
+                >Browse Series</a
+                >
+              </form>
+
+              <form
+                      id="submitBrowseDerivEpi"
+                      th:action="@{/episodes/allEpiWithDerivedEpi}"
+                      method="POST"
+              >
+
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitBrowseDerivEpi').submit();"
+                >Browse Derived Episodes</a
+                >
+              </form>
+            </div>
+          </li>
+
+
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLink2"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+              Create
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                      id="submitCreate2"
+                      action="/create_comic_series"
+                      method="GET"
+              >
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitCreate2').submit()"
+                >Create a Serie</a
+                >
+              </form>
+              <div class="dropdown-divider"></div>
+              <form
+                      id="submitUpload"
+                      th:action="@{/episodes/upload_episode}"
+                      method="GET"
+              >
+                <input
+                        id="dummyUsernameForm2"
+                        type="text"
+                        name="username"
+                        hidden
+                />
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitUpload').submit()"
+                >Upload an Episode</a
+                >
+              </form>
+              <form id="submitDraw" action="/drawing_page" method="GET">
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitDraw').submit()"
+                >Draw a Panel</a
+                >
+              </form>
+            </div>
+          </li>
+          <li class="nav-item">
+            <form
+                    id="submitManage"
+                    th:action="@{/series/mySeries}"
+                    method="GET"
+            >
+              <input
+                      id="dummyUsernameForm3"
+                      type="text"
+                      name="username"
+                      hidden
+              />
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitManage').submit()"
+              >Manage</a
+              >
+            </form>
+          </li>
+          <li class="nav-item">
+            <form id="submitSetting" action="/login/getUser" method="GET">
+              <input
+                      id="dummyUsernameForm1"
+                      type="text"
+                      name="username"
+                      hidden
+              />
+
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitSetting').submit()"
+              >Account Settings</a
+              >
+            </form>
+          </li>
+          <li class="nav-item pull-right">
+            <form id="submitSignout" action="/signout" method="GET">
+              <a
+                      class="nav-link pull-right"
+                      id="signoutBtn"
+                      href="#"
+                      onclick="document.getElementById('submitSignout').submit()"
+              >Sign Out</a
+              >
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="card">
+      <div class="card-header">
+      <span th:text="${series.SeriesName}"style="font-weight: bold;"></span>
+      </div>
+      <div class="card-body">
+        <div class="card">
+          <div class="card-header"><span th:text="${series.SeriesName}"style="font-weight: bold;"></span></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-5">
+                <img
+                  th:src="${series.imageData}"
+                  alt="Card image cap"
+                  style="width: 75%;height: 500px;"
+
+                />
+              </div>
+
+              <div class="col-sm-7">
+                <span><strong>Likes :</strong></span><span th:text="${series.sumLikes}"></span>
+                <br />
+                <br />
+                <span><strong>Category:</strong></span><span th:text="${series.categories}"></span>
+                <br />
+                <br />
+                <span><strong>Author:</strong></span><span th:text="${series.author}"></span>
+                <br />
+                <br />
+                <span><strong>Description:</strong></span><p th:text="${series.description}"></p>
+                <form id="submitSubscribe" th:action="@{/series/addSubscription}">
+                  <input name="SeriesID" th:value="${series.SeriesID}" hidden/>
+                  <input name="username" id="userNameInput1" hidden/>
+                  <button th:if="${sub == false}" type="button" id="subscribeButton" onclick="this.form.submit();" class="btn btn-outline-primary">
+                    Subscribe
+                  </button>
+                </form>
+                <form id="submitUnsubscribe" th:action="@{/series/deleteSubscription}">
+                  <input name="SeriesID" th:value="${series.SeriesID}" hidden/>
+                  <input name="username" id="userNameInput2" hidden/>
+                  <button th:if="${sub == true}" type="button" id="unsubscribeButton" onclick="this.form.submit();" class="btn btn-outline-primary">
+                    Unsubscribe
+                  </button>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="episodeTable" style="margin:10px;">
+          <div th:if="${episodes} != null" class="row">
+            <div
+              th:each="episode : ${episodes}"
+              class="col-sm-4"
+              style="margin:10px 0px;"
+            >
+              <div class="card">
+                <img
+                  class="card-img-top"
+                  th:src="${episode.imageData}"
+                  alt="Card image cap"
+                />
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <h5 class="card-title"><span th:text="${episode.EpisodeName}"style="font-weight: bold;"></span></h5>
+                    </div>
+                    <div class="col-sm-4">
+                      <form
+                        id="submitReadEpisode"
+                        th:action="@{/episodes/readEpisode}"
+                      >
+                        <input
+                          name="episodeID"
+                          th:value="${episode.EpisodeID}"
+                          hidden
+                        />
+                        <input
+                          id="dummyUsernameForm5"
+                          name="username"
+                          hidden
+                        />
+                        <input
+                          class="btn btn-primary"
+                          type="button"
+                          onclick="this.form.submit();"
+                          value="View"
+                        />
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../static/js/navbar.js" th:src="@{/js/navbar.js}"></script>
+    <script
+      src="../static/js/view_comic_series.js"
+      th:src="@{/js/view_comic_series.js}"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  lang="en"
+>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>The ComicVerse - Browse</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <script
+      type="text/javascript"
+      src="../static/js/usersession.js"
+      th:src="@{/js/usersession.js}"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <!--<script src="../static/js/browse.js" th:src="@{/js/browse.js}"></script>-->
+  </head>
+
+  <body>
+    <!--Menu Bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!--<a class="navbar-brand" href="#">ComicVerse</a>-->
+      <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <form id="submitHome2" action="/home" method="GET">
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitHome2').submit()"
+              >Home <span class="sr-only">(current)</span></a
+              >
+            </form>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+              Browse
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                      id="submitBrowseSeries"
+                      th:action="@{/series/allSeries}"
+                      method="POST"
+              >
+                <input
+                        name="username"
+                        id="dummyUsernameForm10"
+                        hidden/>
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitBrowseSeries').submit();"
+                >Browse Series</a
+                >
+              </form>
+
+              <form
+                      id="submitBrowseDerivEpi"
+                      th:action="@{/episodes/allEpiWithDerivedEpi}"
+                      method="POST"
+              >
+
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitBrowseDerivEpi').submit();"
+                >Browse Derived Episodes</a
+                >
+              </form>
+            </div>
+          </li>
+
+
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdownMenuLink2"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+              Create
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                      id="submitCreate2"
+                      action="/create_comic_series"
+                      method="GET"
+              >
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitCreate2').submit()"
+                >Create a Serie</a
+                >
+              </form>
+              <div class="dropdown-divider"></div>
+              <form
+                      id="submitUpload"
+                      th:action="@{/episodes/upload_episode}"
+                      method="GET"
+              >
+                <input
+                        id="dummyUsernameForm2"
+                        type="text"
+                        name="username"
+                        hidden
+                />
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitUpload').submit()"
+                >Upload an Episode</a
+                >
+              </form>
+              <form id="submitDraw" action="/drawing_page" method="GET">
+                <a
+                        class="dropdown-item"
+                        href="#"
+                        onclick="document.getElementById('submitDraw').submit()"
+                >Draw a Panel</a
+                >
+              </form>
+            </div>
+          </li>
+          <li class="nav-item">
+            <form
+                    id="submitManage"
+                    th:action="@{/series/mySeries}"
+                    method="GET"
+            >
+              <input
+                      id="dummyUsernameForm3"
+                      type="text"
+                      name="username"
+                      hidden
+              />
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitManage').submit()"
+              >Manage</a
+              >
+            </form>
+          </li>
+          <li class="nav-item">
+            <form id="submitSetting" action="/login/getUser" method="GET">
+              <input
+                      id="dummyUsernameForm1"
+                      type="text"
+                      name="username"
+                      hidden
+              />
+
+              <a
+                      class="nav-link"
+                      href="#"
+                      onclick="document.getElementById('submitSetting').submit()"
+              >Account Settings</a
+              >
+            </form>
+          </li>
+          <li class="nav-item pull-right">
+            <form id="submitSignout" action="/signout" method="GET">
+              <a
+                      class="nav-link pull-right"
+                      id="signoutBtn"
+                      href="#"
+                      onclick="document.getElementById('submitSignout').submit()"
+              >Sign Out</a
+              >
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <div style="width:100%;">
+      <div class="input-group" style="margin: 20px auto;width:100%;">
+        <div class="input-group-prepend">
+          <nav class="navbar navbar-light">
+            <a class="navbar-brand" style="color: orange;">TheComicVerse</a>
+          </nav>
+          <button
+            id = "searchOptionBtn"
+            class="btn btn-outline-secondary dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style="width:150px"
+          >
+            Search by
+          </button>
+
+          <div class="dropdown-menu">
+            <a class="dropdown-item" name="All" data-value="all" href="#"
+              >All</a
+            >
+            <a class="dropdown-item" name="byTitle" data-value="title" href="#"
+              >Title</a
+            >
+            <a
+              class="dropdown-item"
+              name="byAuthor"
+              data-value="author"
+              href="#"
+              >Author</a
+            >
+          </div>
+        </div>
+        <form
+          id="searchBy"
+          th:action="@{/series/search}"
+          method="post"
+          style="width:65%;"
+        >
+          <input
+            type="hidden"
+            name="searchOption"
+            id="searchOption"
+            value= "all"
+            style="height:0"
+          />
+          <input
+          id="keywordinput"
+            type="search"
+            class="form-control"
+            placeholder="Search"
+            aria-label="Search"
+            name="keyword"
+            style="height:100%; width:100%;"
+          />
+
+        </form>
+        <div th:if="${th_searchOption == 'all'}" class="row">
+          <script type="text/javascript" th:inline="javascript">
+
+//alert("first" + document.getElementById("searchOptionBtn").value + document.getElementById("searchOption").value);
+          // Update drop box text
+          $("#searchOptionBtn").html("All");
+          // Update drop box value
+
+          $("#searchOptionBtn").val("all").change();
+
+          // Update searchOption
+          $("#searchOption").val("all").change();
+
+          </script>
+        </div>
+        <div th:if="${th_searchOption == 'title'}" class="row">
+          <script type="text/javascript" th:inline="javascript">
+
+          // Update drop box text
+          $("#searchOptionBtn").html("Title");
+
+          // Update drop box value
+          $("#searchOptionBtn").val("title").change();
+
+          // Update searchOption
+          $("#searchOption").val("title").change();
+
+          </script>
+        </div>
+        <div th:if="${th_searchOption == 'author'}" class="row">
+          <script type="text/javascript" th:inline="javascript">
+
+          // Update drop box text
+          $("#searchOptionBtn").html("Author");
+
+          // Update drop box value
+          $("#searchOptionBtn").val("author").change();
+
+          // Update searchOption
+          $("#searchOption").val("author").change();
+
+          </script>
+        </div>
+
+        <div th:if="${th_keyword != null}" class="row">
+
+          <script type="text/javascript" th:inline="javascript">
+
+        document.getElementById("keywordinput").value =  [[${ th_keyword }]];
+
+        /*alert("fff" + document.getElementById("keywordinput").value );*/
+
+          </script>
+        </div>
+
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-success"
+            type="submit"
+            onclick="document.getElementById('searchBy').submit()"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="container">
+          <h2>Browse</h2>
+          <form id="updateBrowse"
+            th:action="@{/series/categoryBrowse}"
+            method="POST"
+            >
+            <div class="form-group">
+              <input id='searchOptionhidden' type='hidden' value='' name='searchOption'>
+              <input id='keywordhidden' type='hidden' value='' name='keyword'>
+
+              <label>Category</label>
+              <div class="form-check">
+
+                <input id='category1' type='checkbox' value='Political' name='category1'>
+                <input id='category1Hidden' type='hidden' value='' name='category1'>
+
+                <label class="form-check-label" for="category1">
+                  Political
+                </label>
+                <div th:if="${th_category1 == 'Political'}" class="row">
+                  <script type="text/javascript" th:inline="javascript">
+                  document.getElementById("category1").checked = true;
+                  </script>
+                </div>
+              </div>
+              <div class="form-check">
+                <input id='category2' type='checkbox' value='Family' name='category2'>
+                <input id='category2Hidden' type='hidden' value='' name='category2'>
+                <label class="form-check-label" for="category2">
+                  Family
+                </label>
+                <div th:if="${th_category2 == 'Family'}" class="row">
+
+                  <script type="text/javascript" th:inline="javascript">
+                  document.getElementById("category2").checked = true;
+
+                  </script>
+                </div>
+              </div>
+              <div class="form-check">
+                <input id='category3' type='checkbox' value='Animal' name='category3'>
+                <input id='category3Hidden' type='hidden' value='' name='category3'>
+                <label class="form-check-label" for="category3">
+                  Animal
+                </label>
+                <div th:if="${th_category3 == 'Animal'}" class="row">
+
+                  <script type="text/javascript" th:inline="javascript">
+                  document.getElementById("category3").checked = true;
+
+                  </script>
+                </div>
+              </div>
+              <div class="form-check">
+                <input id='category4' type='checkbox' value='Educational' name='category4'>
+                <input id='category4Hidden' type='hidden' value='' name='category4'>
+                <label class="form-check-label" for="category4">
+                  Educational
+                </label>
+                <div th:if="${th_category4 == 'Educational'}" class="row">
+
+                  <script type="text/javascript" th:inline="javascript">
+                  document.getElementById("category4").checked = true;
+
+                  </script>
+                </div>
+              </div>
+              <div class="form-check">
+                <input id='category5' type='checkbox' value='Science Fiction' name='category5'>
+                <input id='category5Hidden' type='hidden' value='' name='category5'>
+                <label class="form-check-label" for="category5">
+                  Science Fiction
+                </label>
+                <div th:if="${th_category5 == 'Science Fiction'}" class="row">
+
+                  <script type="text/javascript" th:inline="javascript">
+                  document.getElementById("category5").checked = true;
+
+                  </script>
+                </div>
+              </div>
+              <div class="form-check">
+                <input id='category6' type='checkbox' value='Sports' name='category6'>
+                <input id='category6Hidden' type='hidden' value='' name='category6'>
+                <label class="form-check-label" for="category6">
+                  Sports
+                </label>
+                <div th:if="${th_category6 == 'Sports'}" class="row">
+
+                  <script type="text/javascript" th:inline="javascript">
+                  document.getElementById("category6").checked = true;
+
+                  </script>
+                </div>
+              </div>
+            </div>
+            <!--<div class="form-group">
+              <label>Rating</label>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="ratingCheck1"
+                />
+                <label class="form-check-label" for="ratingCheck1">
+                  &#x2B50;
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="ratingCheck2"
+                />
+                <label class="form-check-label" for="ratingCheck2">
+                  &#x2B50;&#x2B50;
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="ratingCheck3"
+                />
+                <label class="form-check-label" for="ratingCheck3">
+                  &#x2B50;&#x2B50;&#x2B50;
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="ratingCheck4"
+                />
+                <label class="form-check-label" for="ratingCheck4">
+                  &#x2B50;&#x2B50;&#x2B50;&#x2B50;
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="ratingCheck5"
+                />
+                <label class="form-check-label" for="ratingCheck5">
+                  &#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;
+                </label>
+              </div>
+            </div>-->
+            <div class="form-group">
+              <input
+                class="btn btn-primary"
+                type="button"
+                id = "BrowseBtn"
+                value="Browse"
+              />
+
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+
+      <!-- Series -->
+      <div class="col-sm-10">
+        <div>
+          <div th:if="${series} != null" class="row">
+            <div
+              th:each="serie : ${series}"
+              class="col-sm-4"
+              style="padding-top: 10px; padding-bottom: 10px;"
+            >
+              <div class="card" style="height:300px;">
+                <img
+                  class="card-img-top"
+                  id="thumbnail"
+                  th:src="${serie.imageData}"
+                  alt="Card image cap"
+                  style="height: 65%;"
+                />
+
+                <!--  <img
+                     class="card-img-top"
+                     id="thumbnail"
+                     src="https://pbs.twimg.com/profile_images/458955466756726784/KQpNPBA_.png"
+                     alt="Card image cap"
+                   />
+                   -->
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <span
+                      th:text="${serie.SeriesName}"
+                      style="font-weight: bold;"
+                    ></span>
+                  </h5>
+                  <form
+                    id="submitViewSeries"
+                    th:action="@{/series/view_series}"
+                    method="GET"
+                  >
+                    <input
+                          id="seriesID"
+                          type="number"
+                          name="seriesID"
+                          hidden
+                          th:value="${serie.SeriesID}"
+                  />
+                    <input
+                        id="dummyUsernameForm6"
+                        hidden
+                        name="username"
+                        th:value="${param.username}"/>
+                    <input
+                            class="btn btn-primary"
+                            type="button"
+                            onclick="this.form.submit();"
+                            value="View Comic Series"
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="../static/js/home.js" th:src="@{/js/home.js}"></script>
+    <script src="../static/js/navbar.js" th:src="@{/js/navbar.js}"></script>
+    <script src="../static/js/browse.js" th:src="@{/js/browse.js}"></script>
+  </body>
+</html>
+
+<!--
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="card">
+                    <img
+                      class="card-img-top"
+                      src="https://images-na.ssl-images-amazon.com/images/S/cmx-images-prod/StoryArc/235/235._SX400_QL80_TTD_.jpg"
+                      alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">Batman</h5>
+                      <a class="btn btn-primary" th:href="@{/view_comic_series}"
+                        >View Comic Page</a
+                      >
+
+                      <a href="#" class="btn btn-primary">Subscribe</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card">
+                    <img
+                      class="card-img-top"
+                      src="https://images-na.ssl-images-amazon.com/images/S/cmx-images-prod/StoryArc/1871/1871._SX400_QL80_TTD_.jpg"
+                      alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">Batman</h5>
+                      <a class="btn btn-primary" th:href="@{/view_comic_series}"
+                        >View Comic Page</a
+                      >
+
+                      <a href="#" class="btn btn-primary">Subscribe</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card">
+                    <img
+                      class="card-img-top"
+                      src="https://images.booksense.com/images/544/425/9781481425544.jpg"
+                      alt="Card image cap"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">Snoopy</h5>
+                      <a class="btn btn-primary" th:href="@{/view_comic_series}"
+                        >View Comic Page</a
+                      >
+
+                      <a href="#" class="btn btn-primary">Subscribe</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            -->

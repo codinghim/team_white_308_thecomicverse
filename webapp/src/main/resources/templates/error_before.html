@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>TheComicVerse</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+    />
+
+    <!-- js file -->
+    <script
+            type="text/javascript"
+            src="../static/js/usersession.js"
+            th:src="@{/js/usersession.js}"
+    ></script>
+
+    <title>TheComicVerse</title>
+</head>
+
+<body>
+<div> Page Not Found </div>
+<div th:text="${errorMsg}"></div>
+<form id="submitHome2" action="/home" method="GET">
+    <button
+            onclick="this.form.submit();"
+    >Go Back Home
+    </button>
+</form>
+
+<script src="../static/js/navbar.js" th:src="@{/js/navbar.js}"></script>
+</body>
+</html>

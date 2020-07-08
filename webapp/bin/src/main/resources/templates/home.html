@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>TheComicVerse</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <title>TheComicVerse</title>
+    <!--Menu Bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!--<a class="navbar-brand" href="#">ComicVerse</a>-->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <form id="submitHome" action="/home" method="GET">
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitHome').submit()"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </form>
+          </li>
+          <li class="nav-item">
+            <form id="submitBrowse" action="/browse" method="GET">
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitBrowse').submit()"
+                >Browse</a
+              >
+            </form>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Create
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <form
+                id="submitCreate"
+                action="/create_comic_series"
+                method="GET"
+              >
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="document.getElementById('submitCreate').submit()"
+                  >Create a Serie</a
+                >
+              </form>
+              <div class="dropdown-divider"></div>
+              <form id="submitUpload" action="/upload_episode" method="GET">
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="document.getElementById('submitUpload').submit()"
+                  >Upload an Episode</a
+                >
+              </form>
+              <form id="submitDraw" action="/drawing_page" method="GET">
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  onclick="document.getElementById('submitDraw').submit()"
+                  >Draw an Episode</a
+                >
+              </form>
+            </div>
+          </li>
+          <li class="nav-item">
+            <form id="submitManage" action="/manage_my_series" method="GET">
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitManage').submit()"
+                >Manage</a
+              >
+            </form>
+          </li>
+          <li class="nav-item">
+            <form id="submitSetting" action="/account_settings" method="GET">
+              <a
+                class="nav-link"
+                href="#"
+                onclick="document.getElementById('submitSetting').submit()"
+                >Account Settings</a
+              >
+            </form>
+          </li>
+          <li class="nav-item pull-right">
+            <form id="submitSignout" action="/signout" method="GET">
+              <a
+                class="nav-link pull-right"
+                href="#"
+                onclick="document.getElementById('submitSignout').submit()"
+                >Sign Out</a
+              >
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!--Search Bar-->
+    <div class="input-group" style="margin: 20px auto;">
+      <div class="input-group-prepend">
+        <nav class="navbar navbar-light">
+          <a class="navbar-brand" style="color: orange">TheComicVerse</a>
+        </nav>
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Search by
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Title</a>
+          <a class="dropdown-item" href="#">Author</a>
+        </div>
+      </div>
+      <input
+        type="search"
+        class="form-control mr-sm-2"
+        placeholder="Search"
+        aria-label="Search"
+      />
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+        Search
+      </button>
+    </div>
+
+    <!--Log in-->
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <div class="card">
+            <div class="card-header" style="background-color: bisque;">
+              Login
+            </div>
+            <div class="card-body" id="loginBody">
+              <form
+                id="submitLogin"
+                th:action="@{login/checkLogin}"
+                method="post"
+              >
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="usernameAddon"
+                      >&#x1F464;</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    it="username"
+                    name="username"
+                    class="form-control"
+                    placeholder="Username"
+                    aria-label="Username"
+                    aria-describedby="usernameAddon"
+                  />
+                </div>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="passwordAddon"
+                      >&#x2733;</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    name="password"
+                    class="form-control"
+                    placeholder="Password"
+                    aria-label="Password"
+                    aria-describedby="passwordAddon"
+                  />
+                </div>
+              </form>
+
+              <div class="row">
+                <div style="margin:0 auto;">
+                  <form
+                    id="submitSignUp"
+                    action="/sign_up_form"
+                    method="GET"
+                  ></form>
+                  <button
+                    type="submit"
+                    onclick="document.getElementById('submitSignUp').submit()"
+                    class="btn btn-outline-primary"
+                  >
+                    Sign Up
+                  </button>
+
+                  <button
+                    type="button"
+                    onclick="document.getElementById('submitLogin').submit()"
+                    class="btn btn-outline-success"
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </div>
+              <div class="error_msg" th:if="${param.error}">
+                <p>Invalid username and/or password.</p>
+              </div>
+              <div class="error_msg" th:if="${param.username}">
+                <p th:text="'Welcome '+${param.username}"></p>
+              </div>
+            </div>
+          </div>
+
+          <ul class="list-group" style="margin: 10px auto;">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              style="background-color: bisque;"
+            >
+              Rank
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              1. Tom and Jerry
+              <span class="badge badge-primary badge-pill">New</span>
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              2. Spiderman
+              <span class="badge badge-primary badge-pill">2↑</span>
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              3. Batman
+              <span class="badge badge-primary badge-pill">10↑</span>
+            </li>
+          </ul>
+          <p class>
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseExample"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+              style="display: block; margin: 0 auto;"
+            >
+              Help Information
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+              thecomicverse@gmail.com
+            </div>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="card-deck">
+            <div class="card">
+              <img
+                class="card-img-top"
+                src="https://pbs.twimg.com/profile_images/458955466756726784/KQpNPBA_.png"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Tom and Jerry</h5>
+                <a href="#" class="btn btn-primary">Subscribe</a>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                class="card-img-top"
+                src="https://images-na.ssl-images-amazon.com/images/S/cmx-images-prod/StoryArc/235/235._SX400_QL80_TTD_.jpg"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Batman</h5>
+                <a href="#" class="btn btn-primary">Subscribe</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-deck">
+            <div class="card">
+              <img
+                class="card-img-top"
+                src="https://images.booksense.com/images/544/425/9781481425544.jpg"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Snoopy</h5>
+                <a href="#" class="btn btn-primary">Subscribe</a>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                class="card-img-top"
+                src="https://pbs.twimg.com/profile_images/1002272769352978433/9S4QWSR0_400x400.jpg"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h5 class="card-title">SpongeBob</h5>
+                <a href="#" class="btn btn-primary">Subscribe</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="../static/js/usersession.js" th:src="@{/js/usersession.js}"></script>
+  </body>
+</html>
